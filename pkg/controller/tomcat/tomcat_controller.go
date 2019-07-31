@@ -151,6 +151,19 @@ func (r *ReconcileTomcat) Reconcile(request reconcile.Request) (reconcile.Result
 		return reconcile.Result{}, err
 	}
 
+	// Handle Scaling
+	size := tomcat.Spec.Size
+	if *foundDeployment.Spec.Replicas != size {
+		*foundDeployment.Spec.Replicas = size
+		err = r.client.Update(context.TODO(), foundDeployment)
+		if err != nil {
+			reqLogger.Error(err, "Failed to update Deployment.", "Deployment.Namespace", foundDeployment.Namespace, "Deployment.Name", foundDeployment.Name)
+			return reconcile.Result{}, err
+		}
+		// Spec updated - return and requeue
+		return reconcile.Result{Requeue: true}, nil
+	}
+
 	// Define a new Pod object
 	pod := newPodForCR(tomcat)
 
