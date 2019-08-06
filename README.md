@@ -35,10 +35,34 @@ $ oc new-project tomcat-operator
 $ make run-openshift
 ```
 
-3. Create a Tomcat instance (Custom Resource). An example has been provided in *deploy/crds/tomcat_v1alpha1_tomcat_cr.yaml*
-```bash
-$ oc apply -f deploy/crds/tomcat_v1alpha1_tomcat_cr.yaml
-```
-4. If the DNS is not setup in your Openshift installation, you will need to add the resulting route to your local `/etc/hosts` file in order to resolve the URL. It has point to the IP address of the node running the router. You can determine this address by running `oc get endpoints --namespace=default --selector=router` with a cluster-admin user.
+### Deploy your Web Application
+Once the Tomcat Operator has been deployed, you can now deploy your own webapps via the operator _custom resources_.
 
-5. Finally, to access the newly deployed application, simply access the created route
+1. Build your Web Application using Source-To-Image and git it a name prefixed with your container registry access user
+```bash
+$ s2i build [GIT_URL] maxbeck/tomcat-s2i docker.io/maxbeck/tomcat-app
+```
+
+2. Push the image
+```bash
+$ docker push docker.io/maxbeck/tomcat-app
+```
+
+3. Configure your Custom Resource
+```yaml
+apiVersion: tomcat.apache.org/v1alpha1
+kind: Tomcat
+metadata:
+  name: example-tomcat
+spec:
+  applicationName: tomcat-app
+  applicationImage: docker.io/maxbeck/tomcat-app
+  size: 3
+```
+
+4. Deploy the Custom Resource
+```bash
+$ oc apply -f path/to/your/custom_resource.yaml
+```
+
+5. Finally, to access the newly deployed application, simply create a route using the Openshift UI
