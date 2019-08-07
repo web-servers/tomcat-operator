@@ -233,6 +233,7 @@ func (r *ReconcileTomcat) serviceForTomcat(t *tomcatv1alpha1.Tomcat) *corev1.Ser
 			},
 		},
 		Spec: corev1.ServiceSpec{
+			ClusterIP: "None",
 			Ports: []corev1.ServicePort{{
 				Name:       "http",
 				Port:       8080,
