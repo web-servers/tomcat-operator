@@ -4,5 +4,5 @@ metadata:
   name: example-tomcat
 spec:
   applicationName: tomcat-demo
-  applicationImage: docker.io/jfclere/tomcat-demo
-  size: 1
+  applicationImage: docker.io/maxbeck/tomcat-app
+  size: 3
