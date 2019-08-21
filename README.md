@@ -11,7 +11,7 @@ To build the operator, you will first need to install the following tools:
 ### Procedure
 1. Clone the repository under your `$GOPATH`
 ```bash
-$ git clone https://github.com/maxime-beck/tomcat-operator.git $GOPATH/src/github.com/
+$ git clone https://github.com/web-servers/tomcat-operator.git $GOPATH/src/github.com/
 ```
 
 2. Change to the source directory
