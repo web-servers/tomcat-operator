@@ -38,6 +38,11 @@ clean:
 run-openshift:
 	./build/run-openshift.sh
 
+## run-kubernetes    Run the Tomcat operator on kubernetes.
+run-kubernetes:
+	./build/run-kubernetes.sh
+
+
 ## test             Perform all tests.
 test: unit-test scorecard test-e2e
 
