@@ -16,7 +16,7 @@ spec:
       containers:
         - name: tomcat-operator
           # Replace this with the built image name
-          image: docker.io/maxbeck/tomcat-operator:v0.0.1
+          image: docker.io/jfclere/tomcat-operator:v0.0.1
           command:
           - tomcat-operator
           imagePullPolicy: Always
