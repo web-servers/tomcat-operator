@@ -38,7 +38,7 @@ $ make run-openshift
 ### Deploy your Web Application
 Once the Tomcat Operator has been deployed, you can now deploy your own webapps via the operator _custom resources_.
 
-### From Sources
+### From Sources using Source-To-Image (s2i)
 
 1. Build your Web Application using Source-To-Image and git it a name prefixed with your container registry access user
 ```bash
@@ -71,21 +71,35 @@ $ oc apply -f path/to/your/custom_resource.yaml
 
 ### From a WAR
 If you would like to deploy an existing WAR, you will have to build your container image using the [tomcat-maven](https://github.com/apache/tomcat/tree/9.0.24/res/tomcat-maven) module of Tomcat:
-
-1. Move your WAR file into the $CATALINA_HOME/res/tomcat-maven/webapps directory
+1. Build the maven fat jar for tomcat
 ```bash
-$ cd $CATALINA_HOME/res/tomcat-maven/webapps
-$ mv path/to/war .
+$ cd $CATALINA_HOME/res/tomcat-maven
+$ mvn install
 ```
 
-2. Build the container image using a tag to access your docker registry and push it
+2. Copy your WAR file into the $CATALINA_HOME/res/tomcat-maven/webapps directory
+```bash
+$ mkdir -p $CATALINA_HOME/res/tomcat-maven/webapps
+$ cd $CATALINA_HOME/res/tomcat-maven/webapps
+$ cp path/to/war .
+```
+
+3. Copy your configuration files to the $CATALINA_HOME/res/tomcat-maven directory
+```bash
+$ mkdir -p $CATALINA_HOME/res/tomcat-maven/conf
+$ cp $CATALINA_HOME/output/build/conf/server.xml conf
+$ cp $CATALINA_HOME/output/build/conf/logging.properties conf
+$ cp $CATALINA_HOME/output/build/conf/tomcat-users.xml conf
+```
+
+4. Build the container image using a tag to access your docker registry and push it
 ```bash
 $ docker build . -t <registry>/<username>/tomcat-demo
 $ docker push <registry>/<username>/tomcat-demo
 ```
 Make sure that your registry is accessible by your Openshift Cluster.
 
-3. Configure your Custom Resource
+5. Configure your Custom Resource
 ```yaml
 apiVersion: tomcat.apache.org/v1alpha1
 kind: Tomcat
@@ -97,9 +111,9 @@ spec:
   size: 3
 ```
 
-4. Deploy the Custom Resource
+6. Deploy the Custom Resource
 ```bash
 $ oc apply -f path/to/your/custom_resource.yaml
 ```
 
-5. Create a route using the Openshift UI to access your application.
+7. Create a route using the Openshift UI to access your application.
