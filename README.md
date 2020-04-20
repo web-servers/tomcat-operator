@@ -23,6 +23,10 @@ $ cd $GOPATH/src/github.com/tomcat-operator
 ```bash
 $ make build
 ```
+4. Push it to docker (docker.io/${USER}/tomcat-operator:version)
+```bash
+$ make push
+```
 
 ## Deploy to an Openshift Cluster
 1. Login to your Openshift Server using `oc login` and use it to create a new project
