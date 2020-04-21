@@ -6,7 +6,7 @@ set -o pipefail
 
 ARCH=amd64
 UNAMEARCH=`uname -p`
-if [ $UNAMEARCH=aarch64 ]; then
+if [ "$UNAMEARCH" == "aarch64" ]; then
   ARCH=arm64
 fi
 echo "using ARCH: ${ARCH}"

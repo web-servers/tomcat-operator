@@ -1,8 +1,0 @@
-apiVersion: tomcat.apache.org/v1alpha1
-kind: Tomcat
-metadata:
-  name: example-tomcat
-spec:
-  applicationName: tomcat-demo
-  applicationImage: docker.io/maxbeck/tomcat-app
-  size: 3
