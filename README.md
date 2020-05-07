@@ -46,12 +46,12 @@ Once the Tomcat Operator has been deployed, you can now deploy your own webapps 
 
 1. Build your Web Application using Source-To-Image and git it a name prefixed with your container registry access user
 ```bash
-$ s2i build [GIT_URL] maxbeck/tomcat-s2i docker.io/maxbeck/tomcat-app
+$ s2i build [GIT_URL] ${USER}/tomcat-s2i docker.io/${USER}/tomcat-app
 ```
 
 2. Push the image
 ```bash
-$ docker push docker.io/maxbeck/tomcat-app
+$ docker push docker.io/${USER}/tomcat-app
 ```
 
 3. Configure your Custom Resource
@@ -62,7 +62,7 @@ metadata:
   name: example-tomcat
 spec:
   applicationName: tomcat-app
-  applicationImage: docker.io/maxbeck/tomcat-app
+  applicationImage: docker.io/${USER}/tomcat-app
   size: 3
 ```
 
@@ -77,6 +77,10 @@ $ oc apply -f path/to/your/custom_resource.yaml
 If you would like to deploy an existing WAR, you will have to build your container image using the [tomcat-maven](https://github.com/apache/tomcat/tree/9.0.24/res/tomcat-maven) module of Tomcat:
 1. Build the maven fat jar for tomcat
 ```bash
+$ git clone https://github.com/apache/tomcat
+$ cd tomcat
+$ ant
+$ CATALINA_HOME=`pwd`
 $ cd $CATALINA_HOME/res/tomcat-maven
 $ mvn install
 ```
