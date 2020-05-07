@@ -275,6 +275,27 @@ func (r *ReconcileTomcat) deploymentForTomcat(t *tomcatv1alpha1.Tomcat) *appsv1.
 					Labels: label,
 				},
 				Spec: corev1.PodSpec{
+					Volumes: []corev1.Volume{{
+						Name: "app-volume",
+						VolumeSource: corev1.VolumeSource{
+							EmptyDir: &corev1.EmptyDirVolumeSource{},
+						},
+					}},
+					InitContainers: []corev1.Container{{
+						Name: "war",
+						Image: t.Spec.WebArchiveImage,
+						Command: []string{
+							"sh",
+							"-c",
+							"cp /*/target/*.war /mnt",
+						},
+						VolumeMounts: []corev1.VolumeMount{
+							{
+								Name: "app-volume",
+								MountPath: "/mnt",
+							},
+						},
+					}},
 					Containers: []corev1.Container{{
 						Name:  applicationName,
 						Image: applicationImage,
@@ -299,6 +320,12 @@ func (r *ReconcileTomcat) deploymentForTomcat(t *tomcatv1alpha1.Tomcat) *appsv1.
 							},
 							InitialDelaySeconds: 3,
 							PeriodSeconds:       3,
+						},
+						VolumeMounts: []corev1.VolumeMount{
+							{
+								Name:      "app-volume",
+								MountPath: "/tomcat/webapps/",
+							},
 						},
 					}},
 				},
