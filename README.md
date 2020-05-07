@@ -95,6 +95,7 @@ $ cp path/to/war .
 3. Copy your configuration files to the $CATALINA_HOME/res/tomcat-maven directory
 ```bash
 $ mkdir -p $CATALINA_HOME/res/tomcat-maven/conf
+$ cd $CATALINA_HOME/res/tomcat-maven
 $ cp $CATALINA_HOME/output/build/conf/server.xml conf
 $ cp $CATALINA_HOME/output/build/conf/logging.properties conf
 $ cp $CATALINA_HOME/output/build/conf/tomcat-users.xml conf
