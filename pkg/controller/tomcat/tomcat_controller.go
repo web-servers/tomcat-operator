@@ -287,7 +287,7 @@ func (r *ReconcileTomcat) deploymentForTomcat(t *tomcatv1alpha1.Tomcat) *appsv1.
 						Command: []string{
 							"sh",
 							"-c",
-							"cp /*/target/*.war /mnt",
+							"cp /*/target/*.war /mnt/ROOT.war",
 						},
 						VolumeMounts: []corev1.VolumeMount{
 							{
@@ -314,7 +314,7 @@ func (r *ReconcileTomcat) deploymentForTomcat(t *tomcatv1alpha1.Tomcat) *appsv1.
 						ReadinessProbe: &corev1.Probe{
 							Handler: corev1.Handler{
 								HTTPGet: &v1.HTTPGetAction{
-									Path: "/demo-1.0/health",
+									Path: "/health",
 									Port: intstr.FromString("http"),
 								},
 							},
@@ -324,7 +324,7 @@ func (r *ReconcileTomcat) deploymentForTomcat(t *tomcatv1alpha1.Tomcat) *appsv1.
 						VolumeMounts: []corev1.VolumeMount{
 							{
 								Name:      "app-volume",
-								MountPath: "/tomcat/webapps/",
+								MountPath: "/deployments/webapps/",
 							},
 						},
 					}},
