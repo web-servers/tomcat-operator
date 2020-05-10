@@ -285,9 +285,9 @@ func (r *ReconcileTomcat) deploymentForTomcat(t *tomcatv1alpha1.Tomcat) *appsv1.
 						Name: "war",
 						Image: t.Spec.WebArchiveImage,
 						Command: []string{
-							"sh",
-							"-c",
-							"cp /*/target/*.war /mnt/ROOT.war",
+							"./mavenbuilder.sh",
+							t.Spec.WebAppURL,
+							"/mnt/ROOT.war",
 						},
 						VolumeMounts: []corev1.VolumeMount{
 							{

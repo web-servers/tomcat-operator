@@ -1,0 +1,15 @@
+FROM centos:latest
+
+LABEL Tomcat operator
+LABEL maven builder for /mnt/ROOT.war using giturl.
+
+RUN dnf install -y git maven
+RUN dnf clean all
+
+RUN mkdir TMP
+RUN chmod 777 TMP
+RUN mkdir .m2
+RUN chmod 777 .m2
+
+
+COPY mavenbuilder.sh /mavenbuilder.sh

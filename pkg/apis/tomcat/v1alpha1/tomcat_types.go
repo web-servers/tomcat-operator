@@ -14,6 +14,7 @@ type TomcatSpec struct {
 	ApplicationImage string `json:"applicationImage"`
 	Size             int32  `json:"size"`
 	WebArchiveImage string `json:"webArchiveImage,omitempty"`
+	WebAppURL string `json:"webAppURL,omitempty"`
 }
 
 // TomcatStatus defines the observed state of Tomcat
