@@ -275,6 +275,27 @@ func (r *ReconcileTomcat) deploymentForTomcat(t *tomcatv1alpha1.Tomcat) *appsv1.
 					Labels: label,
 				},
 				Spec: corev1.PodSpec{
+					Volumes: []corev1.Volume{{
+						Name: "app-volume",
+						VolumeSource: corev1.VolumeSource{
+							EmptyDir: &corev1.EmptyDirVolumeSource{},
+						},
+					}},
+					InitContainers: []corev1.Container{{
+						Name: "war",
+						Image: t.Spec.WebArchiveImage,
+						Command: []string{
+							"./mavenbuilder.sh",
+							t.Spec.WebAppURL,
+							"/mnt/ROOT.war",
+						},
+						VolumeMounts: []corev1.VolumeMount{
+							{
+								Name: "app-volume",
+								MountPath: "/mnt",
+							},
+						},
+					}},
 					Containers: []corev1.Container{{
 						Name:  applicationName,
 						Image: applicationImage,
@@ -293,12 +314,18 @@ func (r *ReconcileTomcat) deploymentForTomcat(t *tomcatv1alpha1.Tomcat) *appsv1.
 						ReadinessProbe: &corev1.Probe{
 							Handler: corev1.Handler{
 								HTTPGet: &v1.HTTPGetAction{
-									Path: "/demo-1.0/health",
+									Path: "/health",
 									Port: intstr.FromString("http"),
 								},
 							},
 							InitialDelaySeconds: 3,
 							PeriodSeconds:       3,
+						},
+						VolumeMounts: []corev1.VolumeMount{
+							{
+								Name:      "app-volume",
+								MountPath: "/deployments/webapps/",
+							},
 						},
 					}},
 				},

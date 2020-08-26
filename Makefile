@@ -1,6 +1,6 @@
 DOCKER_REPO ?= docker.io/
 IMAGE ?= $(USER)/tomcat-operator
-TAG ?= v0.0.1
+TAG ?= v0.0.2
 PROG := tomcat-operator
 
 .DEFAULT_GOAL := help
