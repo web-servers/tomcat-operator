@@ -16,10 +16,10 @@ spec:
       containers:
         - name: tomcat-operator
           # Replace this with the built image name
-          image: docker.io/jfclere/tomcat-operator:v0.0.2
+          image: docker.io/jfclere/tomcat-operator:v0.0.3
           command:
           - tomcat-operator
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           env:
             - name: WATCH_NAMESPACE
               valueFrom:

@@ -282,7 +282,7 @@ func (r *ReconcileTomcat) deploymentForTomcat(t *tomcatv1alpha1.Tomcat) *appsv1.
 						},
 					}},
 					InitContainers: []corev1.Container{{
-						Name: "war",
+						Name:  "war",
 						Image: t.Spec.WebArchiveImage,
 						Command: []string{
 							"./mavenbuilder.sh",
@@ -291,7 +291,7 @@ func (r *ReconcileTomcat) deploymentForTomcat(t *tomcatv1alpha1.Tomcat) *appsv1.
 						},
 						VolumeMounts: []corev1.VolumeMount{
 							{
-								Name: "app-volume",
+								Name:      "app-volume",
 								MountPath: "/mnt",
 							},
 						},

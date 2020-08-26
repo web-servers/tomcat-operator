@@ -19,7 +19,7 @@ spec:
           image: @OP_IMAGE_TAG@
           command:
           - tomcat-operator
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           env:
             - name: WATCH_NAMESPACE
               valueFrom:
