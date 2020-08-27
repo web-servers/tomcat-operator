@@ -1,6 +1,6 @@
 DOCKER_REPO ?= docker.io/
 IMAGE ?= $(USER)/tomcat-operator
-TAG ?= v0.0.3
+TAG ?= $(shell git rev-parse HEAD)
 PROG := tomcat-operator
 
 .DEFAULT_GOAL := help
@@ -25,6 +25,11 @@ build: tidy unit-test
 ## image            Create the Docker image of the operator
 image: build
 	docker build -t "$(DOCKER_REPO)$(IMAGE):$(TAG)" . -f build/Dockerfile
+	$(MAKE) tag
+
+## tag				Tag the image as latest
+tag:
+	docker tag "$(DOCKER_REPO)$(IMAGE):$(TAG)" "$(DOCKER_REPO)$(IMAGE):latest"
 
 ## push             Push Docker image to the docker.io repository.
 push: image

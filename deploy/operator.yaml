@@ -16,7 +16,7 @@ spec:
       containers:
         - name: tomcat-operator
           # Replace this with the built image name
-          image: docker.io/jfclere/tomcat-operator:v0.0.3
+          image: docker.io/jfclere/tomcat-operator:latest
           command:
           - tomcat-operator
           imagePullPolicy: IfNotPresent
