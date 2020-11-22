@@ -284,6 +284,7 @@ func (r *ReconcileTomcat) deploymentForTomcat(t *tomcatv1alpha1.Tomcat) *appsv1.
 					InitContainers: []corev1.Container{{
 						Name:  "war",
 						Image: t.Spec.WebArchiveImage,
+						ImagePullPolicy: "IfNotPresent",
 						Command: []string{
 							"./mavenbuilder.sh",
 							t.Spec.WebAppURL,
